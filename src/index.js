@@ -54,8 +54,8 @@ function fetchCountries() {
             <p><b>Country</b>: ${country.name.official}</p>
             <p><b>Capital</b>: ${country.capital}</p>
             <p><b>Population</b>: ${country.population}</p>
-            <p><b>Flag</b>: ${country.flags.svg}</p>
-            <p><img src=${country.flags.svg} width = 50px height = 50px></p>
+            
+            <p><img src=${country.flags.svg} width = 50px height = 40px></p>
             <p><b>Languages </b>: ${country.languages}</p>
         </li>`
     }).join("")
