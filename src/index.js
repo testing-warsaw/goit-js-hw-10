@@ -14,6 +14,7 @@ searchBox.addEventListener("input", function() {
 })
 
 function fetchCountries() {
+  
   const apiUrl = `${baseUrl}/name/${findCountry}`
 
     fetch(apiUrl)
@@ -24,7 +25,19 @@ function fetchCountries() {
         return response.json()
       })
       .then((data) => {
-        renderCountries(data)
+
+        if(data.length >= 10){
+          console.log("Za dużo wyników");
+          // alert("Too many matches found. Please enter a more specific name.")
+
+        } else if ( data.length >= 2 && data.length < 10) {
+          renderCountriesList(data)
+
+        } else if (data.length === 1) {
+          renderCountriesInfo(data)
+        }
+
+
       })
       .catch((error) => {
         console.error("Błąd podczas pobierania danych:", error)
@@ -32,7 +45,7 @@ function fetchCountries() {
       })
   }
 
-  function renderCountries(countries) {
+  function renderCountriesList(countries) {
     countryList.innerHTML = ""
     countryInfo.innerHTML = ""
     
@@ -42,8 +55,25 @@ function fetchCountries() {
             <p><b>Capital</b>: ${country.capital}</p>
             <p><b>Population</b>: ${country.population}</p>
             <p><b>Flag</b>: ${country.flags.svg}</p>
+            <p><img src=${country.flags.svg} width = 50px height = 50px></p>
             <p><b>Languages </b>: ${country.languages}</p>
         </li>`
     }).join("")
     countryList.insertAdjacentHTML("beforebegin", marcup)
+}
+
+function renderCountriesInfo(countries) {
+  countryList.innerHTML = ""
+  countryInfo.innerHTML = ""
+  
+  const marcup = countries.map((country) => {
+      return `<li>
+          <p><b>Country</b>: ${country.name.official}</p>
+          <p><b>Capital</b>: ${country.capital}</p>
+          <p><b>Population</b>: ${country.population}</p>
+          <p><b>Flag</b>: ${country.flags.svg}</p>
+          <p><b>Languages </b>: ${country.languages}</p>
+      </li>`
+  }).join("")
+  countryList.insertAdjacentHTML("beforebegin", marcup)
 }
