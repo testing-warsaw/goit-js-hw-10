@@ -3,7 +3,7 @@ const searchBox = document.querySelector("#search-box")
 const countryList = document.querySelector(".country-list")
 const countryInfo = document.querySelector(".country-info")
 
-
+// Gdy Rest API da poprawną odpowiedć przenieść logike zapytań do osobnego pliku i wykonac export
 
 let findCountry = ""
 const baseUrl = "https://restcountries.com/v3.1"
