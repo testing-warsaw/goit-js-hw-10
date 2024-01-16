@@ -1,79 +1,110 @@
 
-const searchBox = document.querySelector("#search-box")
-const countryList = document.querySelector(".country-list")
-const countryInfo = document.querySelector(".country-info")
+import debounce from "lodash.debounce";
+import Notiflix from "notiflix";
 
-// Gdy Rest API da poprawną odpowiedć przenieść logike zapytań do osobnego pliku i wykonac export
-
-let findCountry = ""
-const baseUrl = "https://restcountries.com/v3.1"
-
-searchBox.addEventListener("input", function() {
-  findCountry = searchBox.value
-  fetchCountries(findCountry)
-})
-
-function fetchCountries() {
-  
-  const apiUrl = `${baseUrl}/name/${findCountry}`
-
-    fetch(apiUrl)
-    .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        return response.json()
-      })
-      .then((data) => {
-
-        if(data.length >= 10){
-          console.log("Za dużo wyników");
-          // alert("Too many matches found. Please enter a more specific name.")
-
-        } else if ( data.length >= 2 && data.length < 10) {
-          renderCountriesList(data)
-
-        } else if (data.length === 1) {
-          renderCountriesInfo(data)
-        }
+import { fetchCountries } from "./JS/fetchCountries.js";
 
 
-      })
-      .catch((error) => {
-        console.error("Błąd podczas pobierania danych:", error)
+const dataSearch = document.querySelector("#search-box")
+const dataList = document.querySelector(".country-list")
+const dataInfo = document.querySelector(".country-info")
 
-      })
-  }
+let countryName = ""
 
-  function renderCountriesList(countries) {
-    countryList.innerHTML = ""
-    countryInfo.innerHTML = ""
+dataSearch.addEventListener("input", debounce(countryFinder, 300))
+
+function countryFinder() {
+    countryName = dataSearch.value.trim()
+    if(countryName === "") {
+        clearAll()
+    return
+         
+    }
+    fetchCountries(countryName)
+    .then(dataCountryName => {
+        if(dataCountryName.length > 10){
+            alertToManyMatches()
+
+        } else if (dataCountryName.length >= 2 && dataCountryName.length < 10) {
+            countryDataList(dataCountryName)
+
+        } else if (dataCountryName.length === 1) {
+            clearAll()
+            countryDataInfo(dataCountryName[0])
+        }   
+    }).catch(alertWrongCountryName)
     
-    const marcup = countries.map((country) => {
+}
+
+function countryDataList(countries) {
+    clearAll()
+    
+    const countryNameList = countries.map((country) => {
         return `<li>
-            <p><b>Country</b>: ${country.name.official}</p>
-            <p><b>Capital</b>: ${country.capital}</p>
-            <p><b>Population</b>: ${country.population}</p>
-            
-            <p><img src=${country.flags.svg} width = 50px height = 40px></p>
-            <p><b>Languages </b>: ${country.languages}</p>
+        <p><b>Country</b>: ${country.name.official}</p>
+        <p><img src=${country.flags.svg} width = 50px height = 40px></p>
+        
         </li>`
     }).join("")
-    countryList.insertAdjacentHTML("beforebegin", marcup)
+    dataList.insertAdjacentHTML("beforeend", countryNameList)
+    
 }
 
-function renderCountriesInfo(countries) {
-  countryList.innerHTML = ""
-  countryInfo.innerHTML = ""
-  
-  const marcup = countries.map((country) => {
-      return `<li>
-          <p><b>Country</b>: ${country.name.official}</p>
-          <p><b>Capital</b>: ${country.capital}</p>
-          <p><b>Population</b>: ${country.population}</p>
-          <p><b>Flag</b>: ${country.flags.svg}</p>
-          <p><b>Languages </b>: ${country.languages}</p>
-      </li>`
-  }).join("")
-  countryList.insertAdjacentHTML("beforebegin", marcup)
+function countryDataInfo() {
+    clearAll()
+    
+    const arrayLanguages = []
+    
+    for(const language in country.languages) {
+        arrayLanguages.push(country.languages[language])
+    }
+    const arrayLanguagesInfo = arrayLanguages.join(", ")
+    
+    return`<li>
+    <p><b>Country</b>: ${country.name.official}</p>
+    <p><b>Capital</b>: ${country.capital}</p>
+    <p><b>Population</b>: ${country.population}</p>
+    <p><img src=${country.flags.svg} width = 50px height = 40px></p>
+    <p><b>Languages </b>: ${arrayLanguagesInfo}</p>
+    
+    </li>`
+    
 }
+// dataInfo.insertAdjacentHTML("afterbegin", country )
+
+function clearAll() {
+    dataList.innerHTML = ""
+    dataInfo.innerHTML = ""
+}
+
+function alertToManyMatches() {
+    Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
+    // console.log("Too many matches found. Please enter a more specific name.");
+}
+
+function alertWrongCountryName() {
+    Notiflix.Notify.warning("Oops, there is no country with that name")
+    // console.log("Oops, there is no country with that name");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
