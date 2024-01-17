@@ -50,9 +50,9 @@ function countryDataList(countries) {
     
 }
 
-function countryDataInfo() {
+function countryDataInfo(country) {
     clearAll()
-    
+
     const arrayLanguages = []
     
     for(const language in country.languages) {
@@ -60,17 +60,17 @@ function countryDataInfo() {
     }
     const arrayLanguagesInfo = arrayLanguages.join(", ")
     
-    return`<li>
+    const singleCountryInfo = `<li>
+    <p><img src=${country.flags.svg} width = 50px height = 40px></p>
     <p><b>Country</b>: ${country.name.official}</p>
     <p><b>Capital</b>: ${country.capital}</p>
     <p><b>Population</b>: ${country.population}</p>
-    <p><img src=${country.flags.svg} width = 50px height = 40px></p>
     <p><b>Languages </b>: ${arrayLanguagesInfo}</p>
     
     </li>`
     
+    dataInfo.insertAdjacentHTML("afterbegin", singleCountryInfo )
 }
-// dataInfo.insertAdjacentHTML("afterbegin", country )
 
 function clearAll() {
     dataList.innerHTML = ""
@@ -86,7 +86,6 @@ function alertWrongCountryName() {
     Notiflix.Notify.warning("Oops, there is no country with that name")
     // console.log("Oops, there is no country with that name");
 }
-
 
 
 
