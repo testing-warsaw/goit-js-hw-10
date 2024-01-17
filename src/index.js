@@ -1,4 +1,4 @@
-
+import "./CSS/style.css"
 import debounce from "lodash.debounce";
 import Notiflix from "notiflix";
 
@@ -40,11 +40,13 @@ function countryDataList(countries) {
     clearAll()
     
     const countryNameList = countries.map((country) => {
-        return `<li>
-        <p><b>Country</b>: ${country.name.official}</p>
-        <p><img src=${country.flags.svg} width = 50px height = 40px></p>
-        
-        </li>`
+        return `
+        <div class="country-info">
+        <p><img src="${country.flags.svg}" width="50px" height="40px"></p>
+        <h2>${country.name.official}</h2>
+        </div>
+       `
+
     }).join("")
     dataList.insertAdjacentHTML("beforeend", countryNameList)
     
@@ -60,14 +62,18 @@ function countryDataInfo(country) {
     }
     const arrayLanguagesInfo = arrayLanguages.join(", ")
     
-    const singleCountryInfo = `<li>
-    <p><img src=${country.flags.svg} width = 50px height = 40px></p>
-    <p><b>Country</b>: ${country.name.official}</p>
-    <p><b>Capital</b>: ${country.capital}</p>
-    <p><b>Population</b>: ${country.population}</p>
-    <p><b>Languages </b>: ${arrayLanguagesInfo}</p>
+    const singleCountryInfo = `
+
+    <div class="country-info">
+        <p"><img src="${country.flags.svg}" width="50px" height="40px"></p>
+        <h2>${country.name.official}</h2>
+        <p><b>Capital</b>: ${country.capital}</p>  
+        <p><b>Population</b>: ${country.population}</p>  
+        <p><b>Languages </b>: ${arrayLanguagesInfo}</p>  
     
-    </li>`
+    
+    </div>
+    `
     
     dataInfo.insertAdjacentHTML("afterbegin", singleCountryInfo )
 }
@@ -79,12 +85,10 @@ function clearAll() {
 
 function alertToManyMatches() {
     Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
-    // console.log("Too many matches found. Please enter a more specific name.");
 }
 
 function alertWrongCountryName() {
     Notiflix.Notify.warning("Oops, there is no country with that name")
-    // console.log("Oops, there is no country with that name");
 }
 
 
