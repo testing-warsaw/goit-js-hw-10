@@ -66,8 +66,8 @@ function countryDataInfo(country) {
     <div class="country">
         <p class="name"><img src="${country.flags.svg}" width="64px" height="32px"><span>${country.name.official}</span></p>
         
-        <p class="population"><b>Capital</b>: ${country.capital}</p>  
-        <p><b>Population</b>: ${country.population}</p>  
+        <p class="capital"><b>Capital</b>: <span>${country.capital}</span></p>  
+        <p class="population"><b>Population</b>: <span>${country.population}</span></p>  
         <p><b>Languages </b>: ${arrayLanguagesInfo}</p>  
     
     
