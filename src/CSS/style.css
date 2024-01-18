@@ -1,5 +1,5 @@
 .country .name{
-  font-size: large;
+  /* font-size: large; */
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
