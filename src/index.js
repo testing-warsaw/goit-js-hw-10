@@ -41,9 +41,8 @@ function countryDataList(countries) {
     
     const countryNameList = countries.map((country) => {
         return `
-        <div class="country-info">
-        <p><img src="${country.flags.svg}" width="50px" height="40px"></p>
-        <h2>${country.name.official}</h2>
+        <div class="country">
+        <p class="name"><img src="${country.flags.svg}" width="64px" height="32px"><span>${country.name.official}</span></p>
         </div>
        `
 
@@ -64,10 +63,10 @@ function countryDataInfo(country) {
     
     const singleCountryInfo = `
 
-    <div class="country-info">
-        <p"><img src="${country.flags.svg}" width="50px" height="40px"></p>
-        <h2>${country.name.official}</h2>
-        <p><b>Capital</b>: ${country.capital}</p>  
+    <div class="country">
+        <p class="name"><img src="${country.flags.svg}" width="64px" height="32px"><span>${country.name.official}</span></p>
+        
+        <p class="population"><b>Capital</b>: ${country.capital}</p>  
         <p><b>Population</b>: ${country.population}</p>  
         <p><b>Languages </b>: ${arrayLanguagesInfo}</p>  
     
